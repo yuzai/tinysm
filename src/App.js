@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import Normal from './normal/index';
 import Simple from './simple/index';
+import Tinysm from './tinysm/index';
 import './App.css';
 
 function App() {
@@ -30,7 +31,7 @@ function App() {
                 renders the first one that matches the current URL. */}
             <Switch>
             <Route path="/tinysm">
-                <About />
+                <Tinysm />
             </Route>
             <Route path="/simple">
                 <Simple />
@@ -42,10 +43,6 @@ function App() {
         </div>
         </Router>
     );
-}
-
-function About() {
-  return <h2>About</h2>;
 }
 
 export default App;
