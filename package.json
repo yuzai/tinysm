@@ -1,8 +1,8 @@
 {
-  "name": "tinysm",
-  "version": "0.1.0",
+  "name": "hooks-tinysm",
+  "version": "0.1.12",
   "private": false,
-  "main": "index.js",
+  "main": "dist/index.js",
   "description": "a simple state management for react with hooks",
   "keywords": [
     "react-hooks",
@@ -13,9 +13,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://g.hz.netease.com/maxiaobo01/tinysm"
+    "url": "https://github.com/yuzai/tinysm"
   },
-  "files": ["dist"],
+  "files": ["dist", "src"],
   "peerDependencies": {
     "react": "^17.0.2"
   },

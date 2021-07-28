@@ -5,7 +5,6 @@ module.exports = {
     },
     output: {
       filename: "[name].js",
-      libraryExport: "default",
       library: "tinysm",
       libraryTarget: "umd"
     },
