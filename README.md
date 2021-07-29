@@ -18,7 +18,6 @@ step1: create a store.js file in root directory like blow:
 
 ```js
 import { createStore } from 'hooks-tinysm';
-import { createStore } from 'hooks-tinysm';
 
 const initialState = {
   count: 0,
