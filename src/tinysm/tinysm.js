@@ -21,7 +21,7 @@ const EventCenter = {
     },
 }
 
-export function createStore(reducer, initailState) {
+function createStore(reducer, initailState) {
     const store = {
         state: initailState,
         dispatch: function (action) {
@@ -33,9 +33,9 @@ export function createStore(reducer, initailState) {
     return store;
 };
 
-export const  ContextProvider = Context.Provider;
+const ContextProvider = Context.Provider;
 
-export function shadowEqual(a, b) {
+function shadowEqual(a, b) {
     if (typeof a !== 'object') {
         return a === b;
     }
@@ -56,7 +56,7 @@ export function shadowEqual(a, b) {
     return true;
 }
 
-export const useSelector = (selector, equalFunc = (a, b) => a === b) => {
+const useSelector = (selector, equalFunc = (a, b) => a === b) => {
     const store = useContext(Context);
     const state = selector(store.state);
     const preState = useRef(state);
@@ -83,8 +83,16 @@ export const useSelector = (selector, equalFunc = (a, b) => a === b) => {
     return state;
 };
 
-export const useDispatch = () => {
+const useDispatch = () => {
     const store = useContext(Context);
 
     return store.dispatch;
 };
+
+export {
+    createStore,
+    ContextProvider,
+    useSelector,
+    useDispatch,
+    shadowEqual,
+}

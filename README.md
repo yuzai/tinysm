@@ -1,70 +1,113 @@
-# Getting Started with Create React App
+# a simple state management for react using hooks
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## purpose
 
-## Available Scripts
+In some simple project, there are some state management requirement, but redux is too heavy to involve. then, this tiny tool is for you. And don't worry the rerender becouse of [react contenxt render problem](https://github.com/facebook/react/issues/15156#issuecomment-474590693).
 
-In the project directory, you can run:
+## usage
 
-### `yarn start`
+```
+npm install --save hooks-tinysm
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## getting start
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+let's start with a simple counter
 
-### `yarn test`
+step1: create a store.js file in root directory like blow:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```js
+import { createStore } from 'hooks-tinysm';
+import { createStore } from 'hooks-tinysm';
 
-### `yarn build`
+const initialState = {
+  count: 0,
+};
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'ADD_COUNT':
+      return {
+        ...state,
+        count: state.count + 1
+      };
+    case 'MINUS_COUNT':
+      return {
+        ...state,
+        count: state.count - 1
+      };
+    default:
+      return {
+        ...state
+      };
+  }
+};
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+export default createStore(reducer, initialState);
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+step2: in your root App.js file, add some code like blow:
 
-### `yarn eject`
+```js
+import React from 'react';
+import { ContextProvider } from 'hooks-tinysm';
+import store from './store';
+import Counter from './Counter';
+import './style.css';
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+export default function App() {
+  return (
+    <ContextProvider value={store}>
+      <Counter />
+    </ContextProvider>
+  );
+}
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+step3: in Counter.js file, wirite code like blow:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```js
+import React from 'react';
+import { useDispatch, useSelector } from 'hooks-tinysm';
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+const Counter = () => {
+  const dispatch = useDispatch();
+  const count = useSelector(state => state.count);
 
-## Learn More
+  return (
+    <div>
+      <div>{count}</div>
+      <button
+        onClick={() => {
+          dispatch({
+            type: 'ADD_COUNT'
+          });
+        }}
+      >
+        add
+      </button>
+      <button
+        onClick={() => {
+          dispatch({
+            type: 'MINUS_COUNT'
+          });
+        }}
+      >
+        minus
+      </button>
+    </div>
+  );
+};
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+export default Counter;
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+then, here you are, you finished this simple counter.
 
-### Code Splitting
+you can see the full code in [stacklitz](https://stackblitz.com/edit/react-us68xc)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
+## what's more
+This tool use Context in React, but use a EventEmitter to trigger react render rather than use the react context render. The value in ContextProvider is immutable and the ernder is triggerd by eventemitter. When dispatch execued, will notify all component which use useSelector, then in useSelect will do a compare, if not changed of the selected value, this component will not render.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+By this way, people can use context without performance worries
