@@ -46,4 +46,15 @@ const reducer = (state, action) => {
     }
 }
 
-export default createStore(reducer, initialState);
+const actions = {
+    getAfterThreeSec: (state, action, commit) => {
+        setTimeout(() => {
+            commit({
+                type: 'ADD_TODO',
+                payload: action.payload,
+            })
+        }, 3000);
+    }
+}
+
+export default createStore(reducer, initialState, actions);

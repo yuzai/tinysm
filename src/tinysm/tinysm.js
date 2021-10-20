@@ -21,12 +21,22 @@ const EventCenter = {
     },
 }
 
-function createStore(reducer, initailState) {
+function createStore(reducer, initailState, actions = {}) {
     const store = {
         state: initailState,
+        actions,
         dispatch: function (action) {
-            this.state = reducer(this.state, action);
-            EventCenter.notify();
+            if (this.actions[action.type]) {
+                const act = this.actions[action.type];
+                if (typeof act === 'function') {
+                    act(this.state, action, this.dispatch);
+                } else {
+                    console.error('action is not a function');
+                }
+            } else {
+                this.state = reducer(this.state, action);
+                EventCenter.notify();
+            }
         }
     }
     store.dispatch = store.dispatch.bind(store);
