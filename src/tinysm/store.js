@@ -47,7 +47,7 @@ const reducer = (state, action) => {
 }
 
 const actions = {
-    getAfterThreeSec: (state, action, commit) => {
+    getAfterThreeSec: (state, commit, action) => {
         setTimeout(() => {
             commit({
                 type: 'ADD_TODO',

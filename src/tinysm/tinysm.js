@@ -29,7 +29,7 @@ function createStore(reducer, initailState, actions = {}) {
             if (this.actions[action.type]) {
                 const act = this.actions[action.type];
                 if (typeof act === 'function') {
-                    act(this.state, action, this.dispatch);
+                    act(this.state, this.dispatch, action);
                 } else {
                     console.error('action is not a function');
                 }
